@@ -9,16 +9,23 @@ using Fluidity.Data;
 using Fluidity.Events;
 using Fluidity.Helpers;
 using Fluidity.Services;
-using Umbraco.Core;
+using Umbraco.Core.Composing;
 using Umbraco.Core.Logging;
+using Umbraco.Web;
 
 namespace Fluidity
 {
-    internal class FluidityBootManager : ApplicationEventHandler
+    internal class FluidityBootManager : IComponent
     {
+        private readonly ILogger _logger;
         public static event EventHandler<FluidityStartingEventArgs> FluidityStarting;
 
-        protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
+        public FluidityBootManager(ILogger logger)
+        {
+            _logger = logger;
+        }
+
+        public void Initialize()
         {
             // Build a configuration
             var config = new FluidityConfig();
@@ -45,6 +52,10 @@ namespace Fluidity
             //TODO: Cleanup any orphan sections / trees that may be left over from renames
         }
 
+        public void Terminate()
+        {
+        }
+
         protected virtual void OnFluidityStarting(object sender, FluidityStartingEventArgs e)
         {
             if (FluidityStarting != null)
@@ -55,7 +66,7 @@ namespace Fluidity
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.Error<UmbracoApplicationBase>("An error occurred in an FluidityStarting event handler", ex);
+                    _logger.Error<UmbracoApplicationBase>("An error occurred in an FluidityStarting event handler", ex);
                     throw;
                 }
             }

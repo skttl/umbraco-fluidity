@@ -3,6 +3,7 @@
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
+using NPoco;
 using System;
 using System.Linq.Expressions;
 using Umbraco.Core.Persistence;
@@ -14,7 +15,7 @@ namespace Fluidity.Extensions
     {
         public static Sql OrderBy(this Sql sql, Type type, LambdaExpression orderBy, ISqlSyntaxProvider syntaxProvider)
         {
-            var method = typeof(PetaPocoSqlExtensions).GetGenericMethod("OrderBy", new[] { type }, new[] { typeof(Sql), typeof(Expression<>), typeof(ISqlSyntaxProvider) });
+            var method = typeof(NPocoSqlExtensions).GetGenericMethod("OrderBy", new[] { type }, new[] { typeof(Sql), typeof(Expression<>), typeof(ISqlSyntaxProvider) });
             var generic = method.MakeGenericMethod(type);
             generic.Invoke(null, new object[] { sql, orderBy, syntaxProvider });
             return sql;
@@ -22,7 +23,7 @@ namespace Fluidity.Extensions
 
         public static Sql OrderByDescending(this Sql sql, Type type, LambdaExpression orderByDesc, ISqlSyntaxProvider syntaxProvider)
         {
-            var method = typeof(PetaPocoSqlExtensions).GetGenericMethod("OrderByDescending", new[] { type }, new[] { typeof(Sql), typeof(Expression<>), typeof(ISqlSyntaxProvider) });
+            var method = typeof(NPocoSqlExtensions).GetGenericMethod("OrderByDescending", new[] { type }, new[] { typeof(Sql), typeof(Expression<>), typeof(ISqlSyntaxProvider) });
             var generic = method.MakeGenericMethod(type);
             generic.Invoke(null, new object[] { sql, orderByDesc, syntaxProvider });
             return sql;
@@ -30,7 +31,7 @@ namespace Fluidity.Extensions
 
         public static Sql Where(this Sql sql, Type type, LambdaExpression whereClause, ISqlSyntaxProvider syntaxProvider)
         {
-            var method = typeof(PetaPocoSqlExtensions).GetGenericMethod("Where", new[] { type }, new[] { typeof(Sql), typeof(Expression<>), typeof(ISqlSyntaxProvider) });
+            var method = typeof(NPocoSqlExtensions).GetGenericMethod("Where", new[] { type }, new[] { typeof(Sql), typeof(Expression<>), typeof(ISqlSyntaxProvider) });
             var generic = method.MakeGenericMethod(type);
             generic.Invoke(null, new object[] { sql, whereClause, syntaxProvider });
             return sql;
